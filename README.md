@@ -6,7 +6,8 @@
 
 DragonPHY is the second design in the Open Source PHY project at Stanford.
 
-## Installation
+## Installation Of DragonPHY
+(The process to install the DragonPHY)
 
 1. Clone the repository.
 ```shell
@@ -21,7 +22,8 @@ DragonPHY is the second design in the Open Source PHY project at Stanford.
 > pip install -e .
 ```
 
-## Upgrading
+## Upgrading Process
+(The process to Update)
 
 To upgrade to the latest version of DragonPHY:
 1. Pull changes from the **master** branch.
@@ -33,7 +35,8 @@ To upgrade to the latest version of DragonPHY:
 > pip install -e .
 ```
 
-## Running tests
+## Running tests Of DragaonPHY
+(The process to Run Tests)
 
 1. First install **pytest** if it is not already installed:
 ```shell
