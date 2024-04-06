@@ -25,7 +25,7 @@ requires_list = [
     'hwtypes==1.4.3',
     'ast_tools==0.0.30',
     'kratos==0.0.31.1',
-   # general requirements
+   # general requirements are:
     'pyserial',
     'pexpect',
     'pyyaml',
@@ -39,8 +39,8 @@ requires_list = [
     'scikit-rf',
     'BeautifulSoup4',
     'justag==0.0.4.5',
-    # general requirements with special versions to prevent
-    # warnings that clutter pytest output
+    # general requirements with special versions to prevent:
+    # warnings that clutter pytest output:
     'jinja2>=2.11.1',
     'pysmt==0.9.0'
 ]
