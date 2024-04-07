@@ -50,14 +50,14 @@ def test_system_cheating():
     #   len = 150
 
 
-    # Initialize parameters 
+    # The Initialize parameters:
     load_model = False
     iterations = 100
     training_len = 100000
     pos = 1
     resp_len = 150
     bitwidth = 6
-    plot_len = 100 #iterations
+    plot_len = 100 #These are the iterations
     num_taps = 3
     noise_amp = 0.1
     #noise_amp = 0.02 # with iterations of 1000
@@ -67,24 +67,24 @@ def test_system_cheating():
     tau = 0.87
     
    
-    # Generate weight training codes
+    # Generate Thr weight training codes:
     if load_model:
-        # Load Ideal Codes
+        # Load Ideal Codes:
         ideal_codes = np.loadtxt('dragonphy/analysis/ideal_codes.txt', dtype=np.int16)
         print(f'Ideal codes: {ideal_codes[:plot_len]}')
         training_len=len(ideal_codes)
     else:
-        # Generate Ideal Codes
-        #ideal_codes = np.tile(np.array([-1, 1]), int(training_len/2))    # Harmonic Codes
-        ideal_codes = np.random.randint(2, size=training_len)*2 - 1   # Random Codes
+        # Generate Ideal Codes:
+        #ideal_codes = np.tile(np.array([-1, 1]), int(training_len/2))    # Harmonic Codes:
+        ideal_codes = np.random.randint(2, size=training_len)*2 - 1   # Random Codes:
         np.savetxt('dragonphy/analysis/ideal_codes.txt', ideal_codes)
 
 
-    # Create channel model and channel output
+    # Create The channel model and channel output:
     chan = Channel(channel_type='dielectric1', normal='area', tau=tau, sampl_rate=1, cursor_pos=pos, resp_depth=resp_len)
     chan_out = chan(ideal_codes)
 
-    # Plot channel model
+    # Plot channel model:
     plt.plot(chan.impulse_response)
     plt.suptitle("Channel Response")
     plt.show()
@@ -95,55 +95,55 @@ def test_system_cheating():
         print(f'Cursor pos: {chan.cursor_pos}')
     pos = chan.cursor_pos
 
-    # Add noise
+    # Add noise:
     if noise_en:
         chan_out = chan_out + np.random.randn(len(chan_out))*noise_amp
    
-    # Quantize channel output
+    # Quantize channel output:
     qc = Quantizer(bitwidth, signed=True)
     quantized_chan_out = qc.quantize_2s_comp(chan_out)
 
-    # Adapt Wiener filter to quantized channel output
+    # Adapt Wiener filter to quantized channel output:
     adapt = Wiener(step_size = 0.1, num_taps = num_taps, cursor_pos=pos)
     for i in range(training_len-pos):
         adapt.find_weights_pulse(ideal_codes[i-pos], chan_out[i])   
 
     weights = adapt.weights
 
-    # Quantize weights
+    # Quantize weights:
     qw = Quantizer(11, signed=True)
     quantized_weights = qw.quantize_2s_comp(weights)
     
     if load_model:
         ideal_codes = np.loadtxt('dragonphy/analysis/test_codes.txt')
     else:
-        # Generate test codes
+        # Generate test codes:
         ideal_codes = np.random.randint(2, size=iterations)*2 - 1   # Random Codes
         np.savetxt('dragonphy/analysis/test_codes.txt', ideal_codes)
 
     chan_out = chan(ideal_codes)
-    # Add noise
+    # Add noise:
     if noise_en:
         chan_out = chan_out + np.random.randn(len(chan_out))*noise_amp
 
 
     quantized_chan_out = qc.quantize_2s_comp(chan_out)
 
-    # Perform FFE with Fir
+    # Perform FFE with Fir:
     f = Fir(len(quantized_weights), quantized_weights, 16)
     ffe_out = f(quantized_chan_out)
 
-    # Plot histogram of FFE results
+    # Plot histogram of FFE results:
     Histogram.plot_comparison(quantized_chan_out, ideal_codes, delay_ffe=pos, scale=50, labels=["quantized chan", "ideal"])
     Histogram.plot_comparison(ffe_out, ideal_codes, delay_ffe=pos, scale=15000, labels=["ffe out", "ideal"])
     Histogram.plot_multi_hist(ffe_out, ideal_codes, delay_ffe=pos, n_bits=1, bit_pos=0) 
 
 
-    # Make decision based on FFE output
+    # Make The decision based on FFE output:
     comp_out = np.array([1 if int(np.floor(ffe_val)) >= 0 else -1 for ffe_val in ffe_out])
 
 
-    # Perform MLSD on FFE output
+    # Perform The MLSD on FFE output:
     m1 = MLSD(chan.cursor_pos, chan.impulse_response, n_future=1, bitwidth=bitwidth, quantizer_lsb=qc.lsb)
     m = MLSD(chan.cursor_pos, chan.impulse_response, bitwidth=bitwidth, quantizer_lsb=qc.lsb)
 
@@ -173,7 +173,7 @@ def test_system_cheating():
     print(f'Mismatches occur: {ffe_err_idx}')
 
     margin = 1500 
-    # Plot MLSD Statistics
+    # Plot MLSD Statistics:
     print(f'MLSD Output (only on margin < {margin}, no update, look at {m.n_future} bits in the future)')
     ffe_mlsd_err = m.plot_ffe_mlsd(corrected_ffe_out, corrected_comp_out, quantized_chan_out, ideal_codes, plot_range=[900,1000]) 
     marginal_bits = ffe_mlsd_err < margin
@@ -182,12 +182,12 @@ def test_system_cheating():
     mlsd_out_ffe_margin = m.perform_mlsd_zeros(corrected_comp_out, quantized_chan_out, bool_arr = marginal_bits, update=False)
     err_idx = m.find_err_idx(mlsd_out_ffe_margin, ideal_codes)
 
-    # Plot MLSD statistics
+    # Plot MLSD statistics:
     print(f'MLSD Output (only on margin < {margin}, no update, look at {m1.n_future} bits in the future)')
     mlsd_out = m1.perform_mlsd_zeros(corrected_comp_out, quantized_chan_out, update=False)
     err_idx = m1.find_err_idx(mlsd_out, ideal_codes)
     
-    # Plot MLSD statistics for 2 future bits
+    # Plot MLSD statistics for 2 future bits:
     m2 = MLSD(chan.cursor_pos, chan.impulse_response, n_future=1, bitwidth=bitwidth, quantizer_lsb=qc.lsb)
     print(f'MLSD output, no update, look at {m2.n_future} bits in the future')
     mlsd_out_2bit = m2.perform_mlsd_full_result(corrected_comp_out, quantized_chan_out, update=False)
