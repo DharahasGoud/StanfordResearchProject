@@ -1,4 +1,4 @@
-# DragonPHY
+# DragonPHY Project
 
 [![BuildKite Status](https://badge.buildkite.com/46976365e67cd49a5ef6402136255426d399b17039869a1efd.svg?branch=master)](https://buildkite.com/stanford-aha/dragonphy2)
 [![License:Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
