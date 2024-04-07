@@ -58,7 +58,7 @@ def calculate_err_fn():
 def main(): 
     calculate_err_fn() 
     
-# Used for testing only
+# This is Used for testing only
 if __name__ == "__main__":
     main()
 
