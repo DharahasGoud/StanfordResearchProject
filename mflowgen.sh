@@ -1,32 +1,37 @@
-# upgrade pip
+#!/bin/bash
+
+# Upgrade pip
 pip install -U pip
 
-# install Genesis2
-git clone https://github.com/StanfordVLSI/Genesis2.git
-export GENESIS_HOME=`realpath Genesis2/Genesis2Tools`
-export PERL5LIB="$GENESIS_HOME/PerlLibs/ExtrasForOldPerlDistributions"
-export PATH="$GENESIS_HOME/bin:$PATH"
-export PATH="$GENESIS_HOME/gui/bin:$PATH"
-/bin/rm -rf $GENESIS_HOME/PerlLibs/ExtrasForOldPerlDistributions/Compress
+# Install Genesis2
+if [ ! -d "Genesis2" ]; then
+    git clone https://github.com/StanfordVLSI/Genesis2.git
+    export GENESIS_HOME=$(realpath Genesis2/Genesis2Tools)
+    export PERL5LIB="$GENESIS_HOME/PerlLibs/ExtrasForOldPerlDistributions:$PERL5LIB"
+    export PATH="$GENESIS_HOME/bin:$GENESIS_HOME/gui/bin:$PATH"
+    /bin/rm -rf "$GENESIS_HOME/PerlLibs/ExtrasForOldPerlDistributions/Compress"
+fi
 
-# temporary fix
+# Temporary fix for cvxpy
 pip install cvxpy==1.1.7
 
-# install mflowgen
-git clone https://github.com/cornell-brg/mflowgen
-cd mflowgen
-pip install -e .
-cd ..
+# Install mflowgen
+if [ ! -d "mflowgen" ]; then
+    git clone https://github.com/cornell-brg/mflowgen
+    cd mflowgen || exit
+    pip install -e .
+    cd ..
+fi
 
-# install dragonphy
+# Install dragonphy
 pip install -e .
 
-# make dependencies for design
+# Make dependencies for design
 python make.py --view asic
 
-# run mflowgen
+# Run mflowgen
 mkdir -p build/mflowgen_dragonphy_top
-cd build/mflowgen_dragonphy_top
+cd build/mflowgen_dragonphy_top || exit
 mflowgen run --design ../../designs/dragonphy_top
 make synopsys-dc-synthesis
 cd ../..
