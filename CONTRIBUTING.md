@@ -1,46 +1,55 @@
-# Contributing to DragonPHY
+# Contributing to the Open Source PHY Project
 
-## Using pull requests
+Welcome to the **Open Source PHY** project! We appreciate your interest in contributing. Below are the steps to get involved and make meaningful contributions to this exciting endeavor.
 
-We use pull requests (PRs) to manage updates to the code base, and block merging of PRs unless automated tests pass (they're stored in the **dragonphy/tests** subdirectory).  Here are the steps to go through to use this system.
-1. Make sure that you're up-to-date with the latest changes from the **master** branch:
-```shell
-> git pull origin master
-```
-2. Create a new branch to store your work, and change to that branch.  The name of the branch should give some brief indictation of the feature that you're working on.  For example, you might call the branch **new_sampler** if it mainly represents an upgrade to the sampler design.
-```shell
-> git checkout -b NAME_OF_YOUR_BRANCH
-```
-3. Make changes to the code and commit them.
-```shell
-<make changes to code>
-> git commit -am "description of changes"
-```
-4. Push code back to GitHub:
-```shell
-> git push origin NAME_OF_YOUR_BRANCH
-```
-5. Go to the [dragonphy GitHub page](https://github.com/StanfordVLSI/dragonphy).
-6. Click Pull Requests -> New Pull Request.
-7. Make sure "base" is at **master** and set **compare** to the name of your branch.
-8. Add a title and description of your pull request and click "Create Pull Request".
-  * If the tests pass, then you should be able to click a button at the bottom of the page to merge the pull request.  At that point it is safe to click the button that deletes the branch you created, since the changes have been merged into the **master** branch.
-  * If the tests don't pass, then modify the code and push it to your branch.  The checks will automatically be re-run and the pull request will be updated with the build status.  In other words,
-```shell
-<make changes to code>
-> git commit -am "description of changes"
-> git push origin NAME_OF_YOUR_BRANCH
-```
-10. Now that the changes are merged, switch back to the **master** branch and pull the changes on you machine.
-```shell
-> git checkout master
-> git pull origin master
-```
+## Project Overview
 
-## File Structure
-Please have a look at the [wiki page](https://github.com/StanfordVLSI/dragonphy/wiki/File-Structure) on file structure to make sure that you're adding files in the right places.
+The **Open Source PHY** project aims to create an open-source mixed-signal integrated circuit (IC) design for high-speed links. Our goals include:
 
-## Other guidelines
-1. Please do not commit any process-specific designs or information.  This is very important!
-2. Please do not commit outputs from generators.  This clutters the repository and makes it harder to figure out what are the actual design sources vs. intermediate results.
-3. Please make sure that automatically run tests do not take an excessive amount of time.  We want to make sure that pull requests can be verified in a reasonable amount of time (say ~1hr for all tests).
+1. **Democratizing Knowledge**: By providing an open-source hardware design, we empower engineers, researchers, and students to explore and innovate in the silicon space.
+
+2. **Portability and Reproducibility**: We focus on creating designs that are portable across technology nodes and reproducible using standard tools. This ensures accessibility and ease of adoption.
+
+3. **Collaboration**: We encourage collaboration within the community. Your contributions play a vital role in advancing the project.
+
+## How to Contribute
+
+Follow these steps to contribute effectively:
+
+1. **Stay Up-to-Date**:
+   - Ensure you have the latest changes from the master branch:
+     ```
+     git pull origin master
+     ```
+
+2. **Create a New Branch**:
+   - Name your branch based on the feature you're working on. For example:
+     ```
+     git checkout -b new_sampler
+     ```
+
+3. **Make Code Changes**:
+   - Modify the code as needed and commit your changes:
+     ```
+     git commit -am "Description of changes"
+     ```
+
+4. **Push Your Code**:
+   - Push your code back to GitHub:
+     ```
+     git push origin NAME_OF_YOUR_BRANCH
+     ```
+
+5. **Create a Pull Request**:
+   - Visit the [Open Source PHY GitHub repository](https://vlsi.stanford.edu/research/open-source-phy).
+   - Click on "Pull Requests" and then "New Pull Request."
+   - Set the "base" to master and compare it to your branch.
+   - Add a title and description for your pull request, then click "Create Pull Request."
+
+6. **Test and Merge**:
+   - If the tests pass, you can merge the pull request.
+   - If the tests fail, make necessary modifications and push them to your branch.
+
+## Additional Resources
+
+Explore other projects by the [VLSI Group](http://vlsiweb.stanford.edu/) and join the community discussions. Your contributions matter!
