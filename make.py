@@ -5,7 +5,7 @@ from dragonphy import BuildGraph
 def create_fpga_graph():
     graph = BuildGraph('fpga')
 
-    # Configs
+    # there are Configs
     graph.add_config('system', folders=['config'])
     graph.add_config('jtag_config', folders=['config'])
     graph.add_config('chan', folders=['config', 'fpga'])
@@ -15,7 +15,7 @@ def create_fpga_graph():
     graph.add_config('tx', folders=['config', 'fpga'])
     graph.add_config('clk_delay', folders=['config', 'fpga'])
 
-    # Dependencies
+    #  these are Dependencies
     graph.add_input('acore_intf', ext='md', folders=['md'])
     graph.add_input('cdr_intf', ext='md', folders=['md'])
     graph.add_input('dcore_intf', ext='md', folders=['md'])
@@ -29,7 +29,7 @@ def create_fpga_graph():
     graph.add_input('tx_intf', ext='md', folders=['md'])
     graph.add_input('wme_intf', ext='md', folders=['md'])
 
-    # Scripts
+    #  available Scripts
     graph.add_python('adapt_fir', 'adapt_fir', 'AdaptFir', view='chip_src',
                      folders=['dragonphy'], configs={'system'})
     graph.add_python('jtag', 'jtag', 'JTAG', view='all',
